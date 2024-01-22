@@ -1,0 +1,61 @@
+SELECT * FROM sales_project.sales;
+
+LOAD DATA INFILE 'D:\\Meriskill dataset\\Sales_Data.csv'
+INTO TABLE sales_project.sales
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+-- SALES
+-- 1) REVENUE
+SELECT (SUM(sales)/COUNT(Sales))*100
+FROM sales_project.sales;
+
+-- 2) Total sales Quantity
+SELECT SUM(Quantity_ordered)
+FROM sales;
+
+-- 3) Pecentage of profit
+SELECT (SUM(sales)/SUM(price_each)/SUM(sales))*100 AS Profit
+FROM sales;
+
+-- 4) Total sales by month
+SELECT
+MONTHNAME(order_date) AS MonthName,
+    SUM(sales) AS sales
+FROM sales_project.sales
+GROUP BY MonthName
+ORDER BY sales DESC;
+
+-- 5) sales by day
+SELECT 
+dayname(order_date) AS Days,
+SUM(sales) AS sales
+FROM sales
+GROUP BY Days
+ORDER BY sales DESC; 
+
+-- 6) Quantity order by product
+SELECT Product,
+SUM(Quantity_Ordered) AS Quantity_Ordered
+FROM sales
+GROUP BY product
+ORDER BY Quantity_Ordered DESC;
+
+-- 7) Total sales by product
+SELECT Product,
+SUM(sales) AS sales
+FROM sales
+GROUP BY Product
+ORDER BY sales DESC;
+
+-- 8) Total sales by city
+SELECT city,
+SUM(sales) AS sales
+FROM sales
+GROUP BY city
+ORDER BY sales DESC;
+
+
+
